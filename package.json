@@ -1,0 +1,15 @@
+{
+  "name": "nocchi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "nocchi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "discord.js": "^8.1.0"
+  }
+}
