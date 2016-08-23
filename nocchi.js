@@ -17,7 +17,7 @@ nocchi.loginWithToken(token, function output(error, token) {
 
 nocchi.on('message', function (data) {
 
-  var message = data.content.toLowerCase();
+  var message = data.content;
   var user    = data.author.username;
 
   // Don't react to ourselves
@@ -35,7 +35,7 @@ nocchi.on('message', function (data) {
       data.channel.sendMessage(emotes[emote]);
     }
 
-  } else if (message.indexOf('nocchi') > -1) {
+  } else if (message.toLowerCase().indexOf('nocchi') > -1) {
 
     data.channel.sendMessage('Hai, Nocchi desu.');
 
