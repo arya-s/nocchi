@@ -4,6 +4,8 @@ Install: `npm i`
 
 Run: `node nocchi`
 
+Import cytube exported emotes: `python import_emotes <exported_emotes.json>`
+
 # License
 The MIT License (MIT)
 
