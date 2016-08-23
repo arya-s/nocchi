@@ -35,7 +35,7 @@ nocchi.on('message', function (data) {
       data.channel.sendMessage(emotes[emote]);
     }
 
-  } else if (message.toLowerCase().indexOf('nocchi') > -1) {
+  } else if (message.toLowerCase() === NAME) {
 
     data.channel.sendMessage('Hai, Nocchi desu.');
 
