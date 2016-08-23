@@ -25,11 +25,7 @@ nocchi.on('message', function (data) {
     return;
   }
 
-  if (message.indexOf('nocchi') > -1) {
-
-    data.channel.sendMessage('Hai, Nocchi desu.');
-
-  } else {
+  if (message.indexOf('/') > -1) { 
 
     // Check emotes
     var splitted = message.split(' ');
@@ -39,6 +35,10 @@ nocchi.on('message', function (data) {
       data.channel.sendMessage(emotes[emote]);
     }
 
-  }
+  } else if (message.indexOf('nocchi') > -1) {
+
+    data.channel.sendMessage('Hai, Nocchi desu.');
+
+  } 
 
 });
