@@ -33,7 +33,7 @@ nocchi.on('message', function (data) {
 
     // Check emotes
     var splitted = message.split(' ');
-    var emote    = splitted.find(function (e) { return e.indexOf('/' > -1); });
+    var emote    = splitted.find(function (e) { return e.indexOf('/') > -1; });
 
     if (emotes.hasOwnProperty(emote)) {
       data.channel.sendMessage(emotes[emote]);
