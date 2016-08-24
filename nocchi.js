@@ -17,6 +17,7 @@ var VOLUME_MIN     = 0.0;
 var audioVolume  = 0.3;
 var textChannel  = null;
 var voiceChannel = null;
+var perfume      = [nocchi, achan, kashiyuka];
 
 // Login Perfume
 nocchi.loginWithToken(config.tokens.nocchi, errorHandler);
@@ -80,6 +81,8 @@ nocchi.on('message', function (data) {
     return;
   }
 
+  var randomPerfume = perfume[random(0, perfume.length)];
+
   if (message.indexOf('/') > -1) { 
 
     // Check emotes
@@ -88,7 +91,7 @@ nocchi.on('message', function (data) {
 
     // Image emotes
     if (emotes.hasOwnProperty(emote)) {
-      data.channel.sendMessage(emotes[emote]);
+      sendMessage(randomPerfume, emotes[emote]);
     }
 
     // Audio emotes
@@ -98,7 +101,7 @@ nocchi.on('message', function (data) {
 
   } else if (message.toLowerCase() === NOCCHI_NAME) {
 
-    data.channel.sendMessage('Nocchi desu.');
+    sendMessage(nocchi, 'Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
 
   } else if(message.toLowerCase() === 'perfume') {
@@ -108,12 +111,12 @@ nocchi.on('message', function (data) {
   } else if (message.toLowerCase() === NOCCHI_NAME + ' be louder') {
 
     audioVolume = clamp(audioVolume + VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
-    data.channel.sendMessage('OKAY');
+    sendMessage(nocchi, 'OKAY');
 
   } else if (message.toLowerCase() === NOCCHI_NAME + ' be quieter') {
 
     audioVolume = clamp(audioVolume - VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
-    data.channel.sendMessage('okay');
+    sendMessage(nocchi, 'okay');
 
   }
 
@@ -134,9 +137,9 @@ var introducePerfume = function () {
 
         delayMessage(nocchi, 'Sannin awasete', messageDelay, function () {
 
-          kashiyuka.sendMessage(textChannel, 'Perfume desu.');
-          achan.sendMessage(textChannel, 'Perfume desu.');
-          nocchi.sendMessage(textChannel, 'Perfume desu.');
+          sendMessage(kashiyuka, 'Perfume desu.');
+          sendMessage(achan, 'Perfume desu.');
+          sendMessage(nocchi, 'Perfume desu.');
 
         });
 
@@ -157,9 +160,18 @@ var introducePerfume = function () {
  */
 var delayMessage = function (client, message, delay, done) {
 
-  client.sendMessage(textChannel, message, {}, errorHandler);
+  sendMessage(client, message);
   setTimeout(done, delay);
 
+};
+
+/**
+ * Sends a message to the text channel via the supplied client.
+ * @param  {Discord.Client} client
+ * @param  {String} message
+ */
+var sendMessage = function (client, message) {
+  client.sendMessage(textChannel, message, {}, errorHandler);
 };
 
 var playAudio = function (voice, options, audiomote) {
@@ -213,4 +225,15 @@ var clamp = function (val, min, max) {
 
     return val;
 
+};
+
+
+/**
+ * Returns a random integer between min and max.
+ * @param  {Integer} min
+ * @param  {Integer} max
+ * @return {Integer}
+ */
+var random = function (min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
 };
