@@ -25,6 +25,15 @@ nocchi.loginWithToken(TOKEN, function output(error) {
 
 nocchi.on('ready', function () {
 
+  // Play the game
+  nocchi.setPlayingGame('GAME', function (error) {
+
+    if (error) {
+      console.log('Error setting playing game', error);
+    }
+
+  });
+
   var channels = nocchi.channels;
 
   for (var c in channels) {
@@ -54,9 +63,10 @@ nocchi.on('ready', function () {
 
 nocchi.on('message', function (data) {
 
-  var message = data.content;
-  var user    = data.author.username;
-  var voice   = nocchi.voiceConnection;
+  var message      = data.content;
+  var user         = data.author.username;
+  var voice        = nocchi.voiceConnection;
+  var audioOptions = {volume: audioVolume};
 
   // Don't react to ourselves
   if (user === NAME) {
@@ -75,24 +85,14 @@ nocchi.on('message', function (data) {
     }
 
     // Audio emotes
-    if (voice && audiomotes.hasOwnProperty(emote)) {
-
-      var file    = AUDIO_DIR + audiomotes[emote];
-      var options = {volume: audioVolume};
-
-      voice.playFile(file, options, function (error) {
-
-        if (error) {
-          console.log('Error playing file', file, error);
-        }
-
-      });
-
+    if (audiomotes.hasOwnProperty(emote)) {
+      playAudio(voice, audioOptions, emote);
     }
 
   } else if (message.toLowerCase() === NAME) {
 
-    data.channel.sendMessage('Hai, Nocchi desu.');
+    data.channel.sendMessage('Nocchi desu.');
+    playAudio(voice, audioOptions, 'nocchi');
 
   } else if (message.toLowerCase() === NAME + ' be louder') {
 
@@ -107,6 +107,28 @@ nocchi.on('message', function (data) {
   }
 
 });
+
+var playAudio = function (voice, options, audiomote) {
+
+  if (!audiomotes.hasOwnProperty(audiomote)) {
+    return;
+  }
+
+  var file = AUDIO_DIR + audiomotes[audiomote];
+
+  if (voice) {
+
+    voice.playFile(file, options, function (error) {
+
+      if (error) {
+        console.log('Error playing file', file, error);
+      }
+
+    });
+
+  }
+
+};
 
 /**
  * Clamps a value between two points.
