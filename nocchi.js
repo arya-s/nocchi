@@ -1,55 +1,62 @@
 var Discord      = require('discord.js');
+var config       = require('./config');
 var emotes       = require('./emotes');
 var audiomotes   = require('./audiomotes');
 var nocchi       = new Discord.Client();
+var achan        = new Discord.Client();
+var kashiyuka    = new Discord.Client();
 
-var NAME         = 'nocchi';
-var TOKEN        = process.env.DISCORD_TOKEN;
-var AUDIO_DIR    = 'assets/audio/';
-var VOLUME_DELTA = 0.1;
-var VOLUME_MAX   = 1.0;
-var VOLUME_MIN   = 0.0;
+var NOCCHI_NAME    = 'nocchi';
+var ACHAN_NAME     = 'a-chan';
+var KASHIYUKA_NAME = 'kashiyuka';
+var AUDIO_DIR      = 'assets/audio/';
+var VOLUME_DELTA   = 0.1;
+var VOLUME_MAX     = 1.0;
+var VOLUME_MIN     = 0.0;
 
-var audioVolume = 0.3;
+var audioVolume  = 0.3;
+var textChannel  = null;
+var voiceChannel = null;
 
-nocchi.loginWithToken(TOKEN, function output(error) {
-
-  if (error) {
-
-    console.log('Error loging in with token', error);
-    return;
-
-  }
-
-});
+// Login Perfume
+nocchi.loginWithToken(config.tokens.nocchi, errorHandler);
+achan.loginWithToken(config.tokens.achan, errorHandler);
+kashiyuka.loginWithToken(config.tokens.kashiyuka, errorHandler);
 
 nocchi.on('ready', function () {
 
   // Play the game
-  nocchi.setPlayingGame('GAME', function (error) {
+  nocchi.setPlayingGame('GAME', errorHandler);
 
-    if (error) {
-      console.log('Error setting playing game', error);
-    }
-
-  });
-
-  var channels = nocchi.channels;
+  var channels          = nocchi.channels;
+  var foundTextChannel  = false;
+  var foundVoiceChannel = false;
 
   for (var c in channels) {
     if (channels.hasOwnProperty(c)) {
 
-      if (channels[c] instanceof Discord.VoiceChannel) {
+      var channel = channels[c];
 
-        nocchi.joinVoiceChannel(channels[c], voiceErrorHandler);
+      if (!foundTextChannel && channel instanceof Discord.TextChannel) {
+
+        textChannel      = channel;
+        foundTextChannel = true;
+
+      } else if (!foundVoiceChannel & channel instanceof Discord.VoiceChannel) {
+
+        voiceChannel      = channel;
+        foundVoiceChannel = true;
+
+      }
+
+      if (foundTextChannel && foundVoiceChannel) {
         break;
-
       }
 
     }
   }
 
-  function voiceErrorHandler (error) {
+  nocchi.joinVoiceChannel(voiceChannel, function (error) {
 
     if (error) {
       console.log('Error joining voice channel', error);
@@ -57,11 +64,11 @@ nocchi.on('ready', function () {
       console.log('Joined voice channel.');
     }
 
-  }
+  });
 
 });
 
-nocchi.on('message', function (data) {
+nocchi.on('message', function (data) { 
 
   var message      = data.content;
   var user         = data.author.username;
@@ -69,7 +76,7 @@ nocchi.on('message', function (data) {
   var audioOptions = {volume: audioVolume};
 
   // Don't react to ourselves
-  if (user === NAME) {
+  if (user === NOCCHI_NAME) {
     return;
   }
 
@@ -89,17 +96,21 @@ nocchi.on('message', function (data) {
       playAudio(voice, audioOptions, emote);
     }
 
-  } else if (message.toLowerCase() === NAME) {
+  } else if (message.toLowerCase() === NOCCHI_NAME) {
 
     data.channel.sendMessage('Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
 
-  } else if (message.toLowerCase() === NAME + ' be louder') {
+  } else if(message.toLowerCase() === 'perfume') {
+
+    introducePerfume();
+
+  } else if (message.toLowerCase() === NOCCHI_NAME + ' be louder') {
 
     audioVolume = clamp(audioVolume + VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
     data.channel.sendMessage('OKAY');
 
-  } else if (message.toLowerCase() === NAME + ' be quieter') {
+  } else if (message.toLowerCase() === NOCCHI_NAME + ' be quieter') {
 
     audioVolume = clamp(audioVolume - VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
     data.channel.sendMessage('okay');
@@ -107,6 +118,49 @@ nocchi.on('message', function (data) {
   }
 
 });
+
+/**
+ * Achan, Kashiyuka and Nocchi introduce themselves.
+ */
+var introducePerfume = function () {
+
+  var messageDelay = 700;
+
+  delayMessage(kashiyuka, 'Kashiyuka desu.', messageDelay, function () {
+
+    delayMessage(achan, 'A-chan desu.', messageDelay, function () {
+
+      delayMessage(nocchi, 'Nocchi desu.', messageDelay, function () {
+
+        delayMessage(nocchi, 'Sannin awasete', messageDelay, function () {
+
+          kashiyuka.sendMessage(textChannel, 'Perfume desu.');
+          achan.sendMessage(textChannel, 'Perfume desu.');
+          nocchi.sendMessage(textChannel, 'Perfume desu.');
+
+        });
+
+      });
+
+    });
+
+  });
+
+};
+
+/**
+ * Sends a delayed message to the textChannel and excutes the callback afterwards.
+ * @param  {Discord.Client} client - A discord client.
+ * @param  {String} message - A message string.
+ * @param  {Number} delay - The amount of time to wait before executing the callback.
+ * @param  {Function} done - A callback
+ */
+var delayMessage = function (client, message, delay, done) {
+
+  client.sendMessage(textChannel, message, {}, errorHandler);
+  setTimeout(done, delay);
+
+};
 
 var playAudio = function (voice, options, audiomote) {
 
@@ -126,6 +180,18 @@ var playAudio = function (voice, options, audiomote) {
 
     });
 
+  }
+
+};
+
+/**
+ * A generic error handler that logs the error to stdout
+ * @param  {Error} error
+ */
+var errorHandler = function (error, meta) {
+
+  if (error) {
+    console.log('Error occured', error);
   }
 
 };
