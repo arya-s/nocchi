@@ -1,5 +1,7 @@
 #Nocchi desu.
 
+Setup: `mv config.example.js config.js` and set up discord tokens.
+
 Install: `npm i`
 
 Run: `node nocchi`
