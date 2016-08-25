@@ -87,7 +87,7 @@ nocchi.on('message', function (data) {
 
   var randomPerfume = perfume[random(0, perfume.length)];
 
-  if (messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1) {
+  if (messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 && getEmote(message)) {
 
     addEmote(message, function (error, response) {
 
