@@ -151,12 +151,19 @@ nocchi.on('message', function (data) {
 var addEmote = function (message, done) {
 
   var emote = getEmote(message);
-
   if (emotes.hasOwnProperty(emote)) {
 
     done(null, 'We already have that emote');
     return;
 
+  }
+
+  var image = getImage(message);
+  if (!image) {
+
+    done(null, 'That is not an image.');
+    return;
+    
   }
 
   emotes[emote] = getImage(message);
@@ -174,8 +181,15 @@ var addEmote = function (message, done) {
  */
 var getImage = function (message) {
 
-  var splitted = message.split(' ');
-  return splitted[splitted.indexOf('add') + 1];
+  var splitted      = message.split(' ');
+  var splittedLower = message.toLowerCase().split(' ');
+  var image         = splitted[splittedLower.indexOf('add') + 1];
+
+  if (image.indexOf('http') === -1 ) {
+    return;
+  }
+
+  return image;
 
 };
 
