@@ -1142,7 +1142,7 @@
   "/moayay": "http://i.imgur.com/ld7ETt1.png",
   "/wtfdidyousay": "http://i.imgur.com/CT5agHQ.gif",
   "/fuckyou": "http://i.imgur.com/ASVkPJ3.jpg",
-  "/v\u00e4stsv\u00e4rj\u00e4": "http://i.imgur.com/FRRh4S8.gif",
+  "/västsvärjä": "http://i.imgur.com/FRRh4S8.gif",
   "/yunano": "http://i.imgur.com/UEQyGBh.png",
   "/stank": "https://i.imgur.com/dGq7yPc.png",
   "/ohgod2": "http://i.imgur.com/lj83QDm.gif",
@@ -1463,7 +1463,7 @@
   "/yes4": "http://i.imgur.com/jxWo3KZ.gif",
   "/thatfguyss": "http://i.imgur.com/shlLvUH.gif",
   "/yes2": "http://i.imgur.com/gLgiI5t.gif",
-  "/v\u00e4ldigtv\u00e4stsv\u00e4rje": "http://i.imgur.com/HWEB0gB.gif",
+  "/väldigtvästsvärje": "http://i.imgur.com/HWEB0gB.gif",
   "/moadimples3": "http://i.imgur.com/3WxM5BW.gif",
   "/traitor": "http://i.imgur.com/eyZW4RP.png",
   "/moriclap": "http://i.imgur.com/873QJkt.gif",
@@ -1520,7 +1520,7 @@
   "/ayamiwink2": "http://i.imgur.com/Oq8Bv0G.gif",
   "/ayamiwink3": "http://i.imgur.com/vsAhYfF.gif",
   "/moadimples4": "http://i.imgur.com/ginYofM.gif",
-  "/\u00f6stsv\u00e4rj\u00e4": "http://i.imgur.com/1HvnLD2.gif",
+  "/östsvärjä": "http://i.imgur.com/1HvnLD2.gif",
   "/discord": "http://i.imgur.com/qceQopi.jpg",
   "/fguysssleep": "http://i.imgur.com/H9MPtJS.gif",
   "/bigevssvensson": "http://i.imgur.com/QtrNlUY.gif",
@@ -1833,5 +1833,10 @@
   "/nocchifinger3": "http://i.imgur.com/iE7uhVU.gif",
   "/1mm": "http://i.imgur.com/2bjodeT.gif",
   "/nocchiwag": "http://i.imgur.com/7YnRTCK.gif",
-  "/achan1mm": "http://i.imgur.com/UnFBeFh.gif"
+  "/achan1mm": "http://i.imgur.com/UnFBeFh.gif",
+  "^9": "http://i.imgur.com/hIjKrsD.gif",
+  "/shrug4": "http://i.imgur.com/kKVQ8EM.gif",
+  "/nocchispeed": "http://i.imgur.com/uYuHSf7.gif",
+  "/nocchiseizure": "http://i.imgur.com/rfXDUa9.gif",
+  "/nocchifinger4": "http://i.imgur.com/WitQD4M.gif"
 }
