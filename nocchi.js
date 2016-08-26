@@ -1,18 +1,19 @@
 var EMOTES = 'emotes.json';
 
-var Discord    = require('discord.js');
-var jsonfile   = require('jsonfile');
-var config     = require('./config');
-var emotes     = require('./' + EMOTES);
-var audiomotes = require('./audiomotes');
-var nocchi     = new Discord.Client();
-var achan      = new Discord.Client();
-var kashiyuka  = new Discord.Client();
+var projectPath = require('path').resolve(__dirname);
+var Discord     = require('discord.js');
+var jsonfile    = require('jsonfile');
+var config      = require('./config');
+var emotes      = require('./' + EMOTES);
+var audiomotes  = require('./audiomotes');
+var nocchi      = new Discord.Client();
+var achan       = new Discord.Client();
+var kashiyuka   = new Discord.Client();
 
 var NOCCHI_NAME    = 'nocchi';
 var ACHAN_NAME     = 'a-chan';
 var KASHIYUKA_NAME = 'kashiyuka';
-var AUDIO_DIR      = 'assets/audio/';
+var AUDIO_DIR      = projectPath + '/assets/audio/';
 var VOLUME_DELTA   = 0.1;
 var VOLUME_MAX     = 1.0;
 var VOLUME_MIN     = 0.0;
