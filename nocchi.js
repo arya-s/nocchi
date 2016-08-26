@@ -14,11 +14,8 @@ var NOCCHI_NAME    = 'nocchi';
 var ACHAN_NAME     = 'a-chan';
 var KASHIYUKA_NAME = 'kashiyuka';
 var AUDIO_DIR      = projectPath + '/assets/audio/';
-var VOLUME_DELTA   = 0.1;
-var VOLUME_MAX     = 1.0;
-var VOLUME_MIN     = 0.0;
 
-var audioVolume  = 0.3;
+var audioVolume  = 0.4;
 var textChannel  = null;
 var voiceChannel = null;
 var perfume      = [nocchi, achan, kashiyuka];
@@ -128,16 +125,6 @@ nocchi.on('message', function (data) {
   } else if(messageLower === 'perfume') {
 
     introducePerfume();
-
-  } else if (messageLower === NOCCHI_NAME + ' be louder') {
-
-    audioVolume = clamp(audioVolume + VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
-    sendMessage(nocchi, 'OKAY');
-
-  } else if (messageLower === NOCCHI_NAME + ' be quieter') {
-
-    audioVolume = clamp(audioVolume - VOLUME_DELTA, VOLUME_MIN, VOLUME_MAX);
-    sendMessage(nocchi, 'okay');
 
   }
 
