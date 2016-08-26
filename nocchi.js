@@ -7,23 +7,15 @@ var config      = require('./config');
 var emotes      = require('./' + EMOTES);
 var audiomotes  = require('./audiomotes');
 var nocchi      = new Discord.Client();
-var achan       = new Discord.Client();
-var kashiyuka   = new Discord.Client();
 
-var NOCCHI_NAME    = 'nocchi';
-var ACHAN_NAME     = 'a-chan';
-var KASHIYUKA_NAME = 'kashiyuka';
-var AUDIO_DIR      = projectPath + '/assets/audio/';
+var NOCCHI_NAME = 'nocchi';
+var AUDIO_DIR   = projectPath + '/assets/audio/';
 
 var audioVolume  = 0.4;
 var textChannel  = null;
 var voiceChannel = null;
-var perfume      = [nocchi, achan, kashiyuka];
 
-// Login Perfume
-nocchi.loginWithToken(config.tokens.nocchi, errorHandler);
-achan.loginWithToken(config.tokens.achan, errorHandler);
-kashiyuka.loginWithToken(config.tokens.kashiyuka, errorHandler);
+nocchi.loginWithToken(config.token, errorHandler);
 
 nocchi.on('ready', function () {
 
@@ -58,15 +50,7 @@ nocchi.on('ready', function () {
     }
   }
 
-  nocchi.joinVoiceChannel(voiceChannel, function (error) {
-
-    if (error) {
-      console.log('Error joining voice channel', error);
-    } else {
-      console.log('Joined voice channel.');
-    }
-
-  });
+  nocchi.joinVoiceChannel(voiceChannel, errorHandler);
 
 });
 
@@ -82,8 +66,6 @@ nocchi.on('message', function (data) {
   if (user === NOCCHI_NAME) {
     return;
   }
-
-  var randomPerfume = perfume[random(0, perfume.length)];
 
   if (messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 && getEmote(message)) {
 
@@ -109,7 +91,7 @@ nocchi.on('message', function (data) {
 
     // Image emotes
     if (emotes.hasOwnProperty(emote)) {
-      sendMessage(randomPerfume, emotes[emote]);
+      sendMessage(nocchi, emotes[emote]);
     }
 
     // Audio emotes
@@ -121,10 +103,6 @@ nocchi.on('message', function (data) {
 
     sendMessage(nocchi, 'Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
-
-  } else if(messageLower === 'perfume') {
-
-    introducePerfume();
 
   }
 
@@ -195,49 +173,6 @@ var getEmote = function (message) {
 };
 
 /**
- * Achan, Kashiyuka and Nocchi introduce themselves.
- */
-var introducePerfume = function () {
-
-  var messageDelay = 700;
-
-  delayMessage(kashiyuka, 'Kashiyuka desu.', messageDelay, function () {
-
-    delayMessage(achan, 'A-chan desu.', messageDelay, function () {
-
-      delayMessage(nocchi, 'Nocchi desu.', messageDelay, function () {
-
-        delayMessage(nocchi, 'Sannin awasete', messageDelay, function () {
-
-          sendMessage(kashiyuka, 'Perfume desu.');
-          sendMessage(achan, 'Perfume desu.');
-          sendMessage(nocchi, 'Perfume desu.');
-
-        });
-
-      });
-
-    });
-
-  });
-
-};
-
-/**
- * Sends a delayed message to the textChannel and excutes the callback afterwards.
- * @param  {Discord.Client} client - A discord client.
- * @param  {String} message - A message string.
- * @param  {Number} delay - The amount of time to wait before executing the callback.
- * @param  {Function} done - A callback
- */
-var delayMessage = function (client, message, delay, done) {
-
-  sendMessage(client, message);
-  setTimeout(done, delay);
-
-};
-
-/**
  * Sends a message to the text channel via the supplied client.
  * @param  {Discord.Client} client
  * @param  {String} message
@@ -255,15 +190,7 @@ var playAudio = function (voice, options, audiomote) {
   var file = AUDIO_DIR + audiomotes[audiomote];
 
   if (voice) {
-
-    voice.playFile(file, options, function (error) {
-
-      if (error) {
-        console.log('Error playing file', file, error);
-      }
-
-    });
-
+    voice.playFile(file, options, errorHandler);
   }
 
 };
@@ -278,34 +205,4 @@ var errorHandler = function (error, meta) {
     console.log('Error occured', error);
   }
 
-};
-
-/**
- * Clamps a value between two points.
- * @param {Number} val - The to be clamped value.
- * @param {Number} min - The minimum the value can go to
- * @param {Number} max - The maximum the value can go to
- * @returns {Number}
- */
-var clamp = function (val, min, max) {
-
-    if (val < min) {
-        return min;
-    } else if (val > max) {
-        return max;
-    }
-
-    return val;
-
-};
-
-
-/**
- * Returns a random integer between min and max.
- * @param  {Integer} min
- * @param  {Integer} max
- * @return {Integer}
- */
-var random = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
 };

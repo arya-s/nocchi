@@ -1,6 +1,6 @@
 #Nocchi desu.
 
-Setup: `mv config.example.js config.js` and set up discord tokens.
+Setup: `cp config.example.js config.js` and set up discord token.
 
 Install: `npm i`
 
