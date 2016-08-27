@@ -122,7 +122,7 @@ nocchi.on('message', function (data) {
       return sendMessage(nocchi, 'Something is missing, I can\'t help you.');
     }
 
-    var amount = splittedLower[curIdx];
+    var amount = splittedLower[idx];
     var fromCurrency, toCurrency;
 
     // $ and ¥ are in front of the number
@@ -162,7 +162,7 @@ nocchi.on('message', function (data) {
     } else {
 
       toCurrency = splittedLower[idx].toUpperCase();
-      
+
     }
 
     oxr.latest(function () {
