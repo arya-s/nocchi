@@ -11,6 +11,8 @@
   "devDependencies": {},
   "dependencies": {
     "discord.js": "^8.1.0",
-    "jsonfile": "^2.3.1"
+    "jsonfile": "^2.3.1",
+    "money": "^0.2.0",
+    "open-exchange-rates": "^0.3.0"
   }
 }

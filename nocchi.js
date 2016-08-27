@@ -3,6 +3,8 @@ var EMOTES = 'emotes.json';
 var projectPath = require('path').resolve(__dirname);
 var Discord     = require('discord.js');
 var jsonfile    = require('jsonfile');
+var fx          = require('money');
+var oxr         = require('open-exchange-rates');
 var config      = require('./config');
 var emotes      = require('./' + EMOTES);
 var audiomotes  = require('./audiomotes');
@@ -14,8 +16,11 @@ var AUDIO_DIR   = projectPath + '/assets/audio/';
 var audioVolume  = 0.4;
 var textChannel  = null;
 var voiceChannel = null;
+var currencies   = config.currencies;
 
-nocchi.loginWithToken(config.token, errorHandler);
+oxr.set({app_id: config.oxr});
+
+nocchi.loginWithToken(config.discord, errorHandler);
 
 nocchi.on('ready', function () {
 
@@ -56,11 +61,13 @@ nocchi.on('ready', function () {
 
 nocchi.on('message', function (data) { 
 
-  var message      = data.content;
-  var messageLower = message.toLowerCase();
-  var user         = data.author.username;
-  var voice        = nocchi.voiceConnection;
-  var audioOptions = {volume: audioVolume};
+  var message       = data.content;
+  var splitted      = message.split(' ');
+  var messageLower  = message.toLowerCase();
+  var splittedLower = messageLower.split(' ');
+  var user          = data.author.username;
+  var voice         = nocchi.voiceConnection;
+  var audioOptions  = {volume: audioVolume};
 
   // Don't react to ourselves
   if (user === NOCCHI_NAME) {
@@ -86,8 +93,7 @@ nocchi.on('message', function (data) {
   } else if (message.indexOf('/') > -1 || message.indexOf('^') > -1) { 
 
     // Check emotes
-    var splitted = message.split(' ');
-    var emote    = getEmote(message);
+    var emote = getEmote(message);
 
     // Image emotes
     if (emotes.hasOwnProperty(emote)) {
@@ -103,6 +109,80 @@ nocchi.on('message', function (data) {
 
     sendMessage(nocchi, 'Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
+
+  } else if (messageLower.indexOf(NOCCHI_NAME) > -1 &&
+    (messageLower.indexOf(' in ') > -1 || messageLower.indexOf(' to ') > -1)) {
+
+    var idx = 1;
+
+    //    0                        1                            2       3      4
+    // nocchi [<currencySymbol>]<amount>[<currencySymbol>] [<currency>] in <currency>
+
+    if (splittedLower.length < 4) {
+      return sendMessage(nocchi, 'Something is missing, I can\'t help you.');
+    }
+
+    var amount = splittedLower[curIdx];
+    var fromCurrency, toCurrency;
+
+    // $ and ¥ are in front of the number
+    if (currencies.hasOwnProperty(amount.charAt(0))) {
+
+      fromCurrency = currencies[amount.charAt(0)];
+      idx++;
+
+    } else if(currencies.hasOwnProperty(amount.charAt(amount.length -1))) {
+
+      fromCurrency = currencies[amount.charAt(amount.length -1)];
+      idx++;
+
+    } else if (currencies.hasOwnProperty(splittedLower[curIdx + 1])) {
+
+      fromCurrency = currencies[splittedLower[curIdx + 1]];
+      idx += 2;
+
+    } else {
+
+      fromCurrency = splittedLower[curIdx +1].toUpperCase();
+      idx += 2;
+
+    }
+
+    // Skip the "in" keyword
+    idx++;
+
+    if (idx >= splittedLower.length) {
+      return sendMessage(nocchi, 'I coulnd\'t understand that. Please try again.');
+    }
+
+    if (currencies.hasOwnProperty(splittedLower[idx])) {
+
+      toCurrency = currencies[splittedLower[idx]];
+
+    } else {
+
+      toCurrency = splittedLower[idx].toUpperCase();
+      
+    }
+
+    oxr.latest(function () {
+
+      fx.rates = oxr.rates;
+      fx.base  = oxr.base;
+
+      try {
+
+        var exchanged = fx(amount).from(fromCurrency).to(toCurrency);
+        sendMessage(nocchi, amount + ' ' + fromCurrency + ' = ' + exchanged.toFixed(2) + ' ' + toCurrency);
+
+      } catch (error) {
+
+        console.log('Error exchanging currnecies', error);
+        sendMessage(nocchi, 'I couldn\'t exchange that. Please try again.');
+
+      }
+
+    });
 
   }
 
