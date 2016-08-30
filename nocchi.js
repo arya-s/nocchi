@@ -10,11 +10,11 @@ var emotes      = require('./' + EMOTES);
 var audiomotes  = require('./audiomotes');
 var nocchi      = new Discord.Client();
 
-var NOCCHI_NAME = 'nocchi';
-var AUDIO_DIR   = projectPath + '/assets/audio/';
+var NOCCHI_NAME    = 'nocchi';
+var AUDIO_DIR      = projectPath + '/assets/audio/';
+var CURRENCY_MATCH = new RegExp('(' + NOCCHI_NAME + ') (\\d+) (\\S+)( in | to )(\\S+)'); 
 
 var audioVolume  = 0.4;
-var textChannel  = null;
 var voiceChannel = null;
 var currencies   = config.currencies;
 
@@ -24,37 +24,26 @@ nocchi.loginWithToken(config.discord, errorHandler);
 
 nocchi.on('ready', function () {
 
-  // Play the game
-  nocchi.setPlayingGame('GAME', errorHandler);
-
-  var channels          = nocchi.channels;
-  var foundTextChannel  = false;
-  var foundVoiceChannel = false;
+  var channels = nocchi.channels;
 
   for (var c in channels) {
+
     if (channels.hasOwnProperty(c)) {
 
       var channel = channels[c];
+      if (channel instanceof Discord.VoiceChannel) {
 
-      if (!foundTextChannel && channel instanceof Discord.TextChannel) {
-
-        textChannel      = channel;
-        foundTextChannel = true;
-
-      } else if (!foundVoiceChannel & channel instanceof Discord.VoiceChannel) {
-
-        voiceChannel      = channel;
-        foundVoiceChannel = true;
-
-      }
-
-      if (foundTextChannel && foundVoiceChannel) {
+        voiceChannel = channel;
         break;
+
       }
 
     }
+
   }
 
+  // Play the game
+  nocchi.setPlayingGame('GAME', errorHandler);
   nocchi.joinVoiceChannel(voiceChannel, errorHandler);
 
 });
@@ -81,12 +70,12 @@ nocchi.on('message', function (data) {
       if (error) {
 
         console.log('Error adding emote.');
-        sendMessage(nocchi, 'Error adding emote. Please try again');
+        nocchi.sendMessage(data, 'Error adding emote. Please try again');
         return;
 
       }
 
-      sendMessage(nocchi, response);
+      nocchi.sendMessage(data, response);
 
     });
 
@@ -97,7 +86,7 @@ nocchi.on('message', function (data) {
 
     // Image emotes
     if (emotes.hasOwnProperty(emote)) {
-      sendMessage(nocchi, emotes[emote]);
+      nocchi.sendMessage(data, emotes[emote]);
     }
 
     // Audio emotes
@@ -107,62 +96,31 @@ nocchi.on('message', function (data) {
 
   } else if (messageLower === NOCCHI_NAME) {
 
-    sendMessage(nocchi, 'Nocchi desu.');
+    nocchi.sendMessage(nocchi, 'Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
 
   } else if (messageLower.indexOf(NOCCHI_NAME) > -1 &&
     (messageLower.indexOf(' in ') > -1 || messageLower.indexOf(' to ') > -1)) {
 
-    var idx = 1;
+    var matched = messageLower.match(CURRENCY_MATCH);
+    matched = matched.filter(function (e) { return typeof e !== 'undefined'; });
 
-    //    0                        1                            2       3      4
-    // nocchi [<currencySymbol>]<amount>[<currencySymbol>] [<currency>] in <currency>
-
-    if (splittedLower.length < 4) {
-      return sendMessage(nocchi, 'Something is missing, I can\'t help you.');
+    if (!matched || matched.length < 4) {
+      return nocchi.reply(data, 'Something is missing, I can\'t help you.');
     }
 
-    var amount = splittedLower[idx];
-    var fromCurrency, toCurrency;
+    var lastIdx      = matched.length - 1;
+    var amount       = matched[lastIdx - 3];
+    var fromCurrency = matched[lastIdx - 2];
 
-    // $ and ¥ are in front of the number
-    if (currencies.hasOwnProperty(amount.charAt(0))) {
-
-      fromCurrency = currencies[amount.charAt(0)];
-      idx++;
-
-    } else if(currencies.hasOwnProperty(amount.charAt(amount.length -1))) {
-
-      fromCurrency = currencies[amount.charAt(amount.length -1)];
-      idx++;
-
-    } else if (currencies.hasOwnProperty(splittedLower[curIdx + 1])) {
-
-      fromCurrency = currencies[splittedLower[curIdx + 1]];
-      idx += 2;
-
-    } else {
-
-      fromCurrency = splittedLower[curIdx +1].toUpperCase();
-      idx += 2;
-
+    if (config.currencies.hasOwnProperty(fromCurrency)) {
+      fromCurrency = config.currencies[fromCurrency];
     }
 
-    // Skip the "in" keyword
-    idx++;
+    var toCurrency   = matched[lastIdx];
 
-    if (idx >= splittedLower.length) {
-      return sendMessage(nocchi, 'I coulnd\'t understand that. Please try again.');
-    }
-
-    if (currencies.hasOwnProperty(splittedLower[idx])) {
-
-      toCurrency = currencies[splittedLower[idx]];
-
-    } else {
-
-      toCurrency = splittedLower[idx].toUpperCase();
-
+    if (config.currencies.hasOwnProperty(toCurrency)) {
+      toCurrency = config.currencies[toCurrency];
     }
 
     oxr.latest(function () {
@@ -173,12 +131,12 @@ nocchi.on('message', function (data) {
       try {
 
         var exchanged = fx(amount).from(fromCurrency).to(toCurrency);
-        sendMessage(nocchi, amount + ' ' + fromCurrency + ' = ' + exchanged.toFixed(2) + ' ' + toCurrency);
+        nocchi.reply(data, amount + ' ' + fromCurrency + ' = ' + exchanged.toFixed(2) + ' ' + toCurrency);
 
       } catch (error) {
 
         console.log('Error exchanging currnecies', error);
-        sendMessage(nocchi, 'I couldn\'t exchange that. Please try again.');
+        nocchi.reply(data, 'I couldn\'t exchange that. Please try again.');
 
       }
 
@@ -250,15 +208,6 @@ var getEmote = function (message) {
       return (e.indexOf('http') === -1 && e.indexOf('/') > -1) || (e.indexOf('^') > -1); 
   });
 
-};
-
-/**
- * Sends a message to the text channel via the supplied client.
- * @param  {Discord.Client} client
- * @param  {String} message
- */
-var sendMessage = function (client, message) {
-  client.sendMessage(textChannel, message, {}, errorHandler);
 };
 
 var playAudio = function (voice, options, audiomote) {
