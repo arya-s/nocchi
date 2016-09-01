@@ -14,9 +14,11 @@ var NOCCHI_NAME    = 'nocchi';
 var AUDIO_DIR      = projectPath + '/assets/audio/';
 var CURRENCY_MATCH = new RegExp('(' + NOCCHI_NAME + ') (\\d+) (\\S+)( in | to )(\\S+)'); 
 
-var audioVolume  = 0.4;
-var voiceChannel = null;
-var currencies   = config.currencies;
+var audioVolume      = 0.4;
+var voiceChannel     = null;
+var textChannel      = null;
+var textChannelFound = false;
+var currencies       = config.currencies;
 
 oxr.set({app_id: config.oxr});
 
@@ -35,6 +37,11 @@ nocchi.on('ready', function () {
 
         voiceChannel = channel;
         break;
+
+      } else if (!textChannelFound && channel instanceof Discord.TextChannel) {
+
+        textChannel = channe;
+        textChannelFound = true;
 
       }
 
@@ -142,6 +149,10 @@ nocchi.on('message', function (data) {
 
     });
 
+  } else if (user === 'arya⊿' && messageLower.indexOf(NOCCHI_NAME) > -1 && messageLower.indexOf('say') > -1) {
+
+    nocchi.sendMessage(textChannel, message, {}, errorHandler);
+    
   }
 
 });
