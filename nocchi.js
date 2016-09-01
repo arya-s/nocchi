@@ -40,7 +40,7 @@ nocchi.on('ready', function () {
 
       } else if (!textChannelFound && channel instanceof Discord.TextChannel) {
 
-        textChannel = channe;
+        textChannel = channel;
         textChannelFound = true;
 
       }
@@ -152,7 +152,7 @@ nocchi.on('message', function (data) {
   } else if (user === 'arya⊿' && messageLower.indexOf(NOCCHI_NAME) > -1 && messageLower.indexOf('say') > -1) {
 
     nocchi.sendMessage(textChannel, message, {}, errorHandler);
-    
+
   }
 
 });
