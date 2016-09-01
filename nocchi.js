@@ -14,11 +14,12 @@ var NOCCHI_NAME    = 'nocchi';
 var AUDIO_DIR      = projectPath + '/assets/audio/';
 var CURRENCY_MATCH = new RegExp('(' + NOCCHI_NAME + ') (\\d+) (\\S+)( in | to )(\\S+)'); 
 
-var audioVolume      = 0.4;
-var voiceChannel     = null;
-var textChannel      = null;
-var textChannelFound = false;
-var currencies       = config.currencies;
+var audioVolume       = 0.4;
+var voiceChannel      = null;
+var voiceChannelFound = false;
+var textChannel       = null;
+var textChannelFound  = false;
+var currencies        = config.currencies;
 
 oxr.set({app_id: config.oxr});
 
@@ -33,10 +34,10 @@ nocchi.on('ready', function () {
     if (channels.hasOwnProperty(c)) {
 
       var channel = channels[c];
-      if (channel instanceof Discord.VoiceChannel) {
+      if (!voiceChannelFound && channel instanceof Discord.VoiceChannel) {
 
         voiceChannel = channel;
-        break;
+        voiceChannelFound = true;
 
       } else if (!textChannelFound && channel instanceof Discord.TextChannel) {
 
