@@ -45,7 +45,6 @@ nocchi.on('ready', function () {
         textChannelFound = true;
 
       }
-
     }
 
   }
@@ -150,9 +149,9 @@ nocchi.on('message', function (data) {
 
     });
 
-  } else if (user === 'arya⊿' && messageLower.indexOf(NOCCHI_NAME) > -1 && messageLower.indexOf('say') > -1) {
+  } else if (user === 'arya⊿' && messageLower.charAt(0) === '.') {
 
-    nocchi.sendMessage(textChannel, message, {}, errorHandler);
+    nocchi.sendMessage(textChannel, message.substring(1), {}, errorHandler);
 
   }
 
