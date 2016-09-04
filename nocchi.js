@@ -132,8 +132,6 @@ nocchi.on('message', function (data) {
     toCurrency   = toCurrency.toUpperCase();
     fromCurrency = fromCurrency.toUpperCase();
 
-    console.log(amount, toCurrency, fromCurrency);
-
     oxr.latest(function () {
 
       fx.rates = oxr.rates;
