@@ -12,7 +12,7 @@ var nocchi      = new Discord.Client();
 
 var NOCCHI_NAME    = 'nocchi';
 var AUDIO_DIR      = projectPath + '/assets/audio/';
-var CURRENCY_MATCH = new RegExp('(' + NOCCHI_NAME + ') (\\d+) (\\S+)( in | to )(\\S+)'); 
+var CURRENCY_MATCH = new RegExp('(' + NOCCHI_NAME + ') (\\d+\\.?\\d*) (\\S+)( in | to )(\\S+)'); 
 
 var audioVolume       = 0.4;
 var voiceChannel      = null;
@@ -57,20 +57,22 @@ nocchi.on('ready', function () {
 
 nocchi.on('message', function (data) { 
 
+  var user          = data.author.username;
   var message       = data.content;
   var splitted      = message.split(' ');
   var messageLower  = message.toLowerCase();
   var splittedLower = messageLower.split(' ');
-  var user          = data.author.username;
-  var voice         = nocchi.voiceConnection;
   var audioOptions  = {volume: audioVolume};
+  var voice         = nocchi.voiceConnection;
+  var isDM          = data.channel instanceof Discord.PMChannel;
 
   // Don't react to ourselves
   if (user === NOCCHI_NAME) {
     return;
   }
 
-  if (messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 && getEmote(message)) {
+  if (!isDM && messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 &&
+    getEmote(message)) {
 
     addEmote(message, function (error, response) {
 
@@ -86,7 +88,7 @@ nocchi.on('message', function (data) {
 
     });
 
-  } else if (message.indexOf('/') > -1 || message.indexOf('^') > -1) { 
+  } else if (!isDM && (message.indexOf('/') > -1 || message.indexOf('^') > -1)) { 
 
     // Check emotes
     var emote = getEmote(message);
@@ -101,9 +103,9 @@ nocchi.on('message', function (data) {
       playAudio(voice, audioOptions, emote);
     }
 
-  } else if (messageLower === NOCCHI_NAME) {
+  } else if (!isDM && messageLower === NOCCHI_NAME) {
 
-    nocchi.sendMessage(nocchi, 'Nocchi desu.');
+    nocchi.sendMessage(data, 'Nocchi desu.');
     playAudio(voice, audioOptions, 'nocchi');
 
   } else if (messageLower.indexOf(NOCCHI_NAME) > -1 &&
