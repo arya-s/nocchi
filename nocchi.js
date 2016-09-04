@@ -119,16 +119,20 @@ nocchi.on('message', function (data) {
     var lastIdx      = matched.length - 1;
     var amount       = matched[lastIdx - 3];
     var fromCurrency = matched[lastIdx - 2];
+    var toCurrency   = matched[lastIdx];
 
     if (config.currencies.hasOwnProperty(fromCurrency)) {
       fromCurrency = config.currencies[fromCurrency];
     }
 
-    var toCurrency   = matched[lastIdx];
-
     if (config.currencies.hasOwnProperty(toCurrency)) {
       toCurrency = config.currencies[toCurrency];
     }
+
+    toCurrency   = toCurrency.toUpperCase();
+    fromCurrency = fromCurrency.toUpperCase();
+
+    console.log(amount, toCurrency, fromCurrency);
 
     oxr.latest(function () {
 
