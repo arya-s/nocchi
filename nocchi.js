@@ -78,7 +78,7 @@ nocchi.on('message', function (data) {
 
       if (error) {
 
-        console.log('Error adding emote.');
+        console.log('Error adding emote.', error);
         nocchi.sendMessage(data, 'Error adding emote. Please try again');
         return;
 
