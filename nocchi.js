@@ -1,12 +1,11 @@
-var EMOTES = 'emotes.json';
-
 var projectPath = require('path').resolve(__dirname);
+var EMOTES      = projectPath + '/emotes.json';
 var Discord     = require('discord.js');
 var jsonfile    = require('jsonfile');
 var fx          = require('money');
 var oxr         = require('open-exchange-rates');
 var config      = require('./config');
-var emotes      = require('./' + EMOTES);
+var emotes      = require(EMOTES);
 var audiomotes  = require('./audiomotes');
 var nocchi      = new Discord.Client();
 
