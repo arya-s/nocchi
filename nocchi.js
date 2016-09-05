@@ -71,8 +71,9 @@ nocchi.on('message', function (data) {
     return;
   }
 
-  if (!isDM && messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 &&
-    getEmote(message)) {
+  if (!isDM && messageLower.indexOf(NOCCHI_NAME) === 0 && 
+      messageLower.indexOf('add') > -1 && messageLower.indexOf('to') > -1 && 
+      getEmote(message)) {
 
     addEmote(message, function (error, response) {
 
