@@ -12,10 +12,11 @@ bot.on('ready', () => {
 
   const { channels } = bot;
 
-  voiceChannel = channels.find('type', 'voice');
-  textChannel = channels.find('type', 'text');
+  voiceChannel = channels.find(channel => { return channel instanceof Discord.VoiceChannel; });
+  textChannel = channels.find(channel => { return channel instanceof Discord.TextChannel; });
 
-  voiceChannel.join();
+  bot.setPlayingGame('GAME');
+  bot.joinVoiceChannel(voiceChannel);
 
 });
 
@@ -31,6 +32,7 @@ bot.on('message', message => {
   }
 
   const payload = {
+    bot,
     message,
     channels: { textChannel, voiceChannel }
   };
@@ -45,9 +47,4 @@ bot.on('message', message => {
 
 });
 
-bot.login(discordToken);
-
-// /emote
-// nocchi convert <amount> <from> to|in <to>
-// nocchi add <url> to <emote>
-// nocchi
+bot.loginWithToken(discordToken);

@@ -3,7 +3,8 @@ export default {
     botname: 'BotMcBotface',
     owner: 'OwnerMcOwnface',
     discordToken: '<discord token here>',
-    oxr: '<open exchange rate app id here>',
+    wolframToken: '<wolfram alpha app id here>',
+    oxrToken: '<open exchange rate app id here>',
     currencies: {
         'usd': 'usd',
         'dollars': 'usd',

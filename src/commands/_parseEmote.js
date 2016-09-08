@@ -1,8 +1,13 @@
+import path from 'path';
 import emotes from '../../assets/emotes';
+import audioEmotes from '../../assets/audiomotes';
+import { getEmote } from '../util';
+import Discord from 'discord.js';
 
-/**
- * Parses an emote and returns an emote image if one exists
- */
+
+const audioPath = path.join(__dirname, '../../assets/audio/');
+
+
 class Command {
 
   constructor() {
@@ -11,35 +16,22 @@ class Command {
 
   run(payload) {
 
-    const { textChannel } = payload.channels;
-    const { content } = payload.message;
+    const { bot, message } = payload;
+    const { content } = message;
+    
     const emote = getEmote(content);
+    const isPM = message.channel.isPrivate;
 
     if (emotes.hasOwnProperty(emote)) {
-      textChannel.sendMessage(emotes[emote]);
+      bot.sendMessage(message, emotes[emote]);
+    }
+
+    if (!isPM && audioEmotes.hasOwnProperty(emote)) {
+      bot.voiceConnection.playFile(`${audioPath}${audioEmotes[emote]}`);
     }
 
   }
 
 }
-
-/**
- * Helper function to parse an emote from a message
- * @param  {String} message
- * @return {String} The first emote that has been found.
- */
-const getEmote = function (message) {
-
-  return message.toLowerCase().split(' ').find(e => {
-
-      return (
-        e.indexOf('http') === -1 &&
-        e.indexOf('www.') === -1 &&
-        (e.indexOf('/') > -1 || e.indexOf('^') > -1)
-      );
-
-  });
-
-};
 
 module.exports = new Command();
