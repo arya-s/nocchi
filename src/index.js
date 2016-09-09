@@ -8,6 +8,7 @@ const { discordToken, botname } = config;
 let voiceChannel = null;
 let textChannel = null;
 
+
 bot.on('ready', () => {
 
   const { channels } = bot;
@@ -48,3 +49,4 @@ bot.on('message', message => {
 });
 
 bot.loginWithToken(discordToken);
+  

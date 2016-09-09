@@ -1,28 +1,7 @@
-export default {
+module.exports = {
     debug: false,
     botname: 'BotMcBotface',
     owner: 'OwnerMcOwnface',
-    discordToken: '<discord token here>',
-    wolframToken: '<wolfram alpha app id here>',
-    oxrToken: '<open exchange rate app id here>',
-    currencies: {
-        'usd': 'usd',
-        'dollars': 'usd',
-        'dollar': 'usd',
-        'bucks': 'usd',
-        '$': 'usd',
-        'eur': 'eur',
-        'euro': 'eur',
-        'eurs': 'eur',
-        '€': 'eur',
-        'gbp': 'gbp',
-        'pounds': 'gbp',
-        'pound': 'gbp',
-        'quid': 'gbp',
-        'jpy': 'jpy',
-        'yen': 'jpy',
-        'en': 'jpy',
-        '¥': 'jpy',
-        'sek': 'sek'
-    }
+    discordToken: 'Bot <discord token here>',
+    wolframToken: '<wolfram alpha app id here>'
 };
