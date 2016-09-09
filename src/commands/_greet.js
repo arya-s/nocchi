@@ -3,7 +3,7 @@ import config from '../../config';
 
 const assetsPath = path.join(__dirname, '../../assets');
 const audioPath = path.join(__dirname, '../../assets/audio/');
-const audiomotes = require(`${assetsPath}/audiomotes`);
+const audioEmotes = require(`${assetsPath}/audiomotes`);
 
 
 class Command {

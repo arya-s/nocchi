@@ -5,7 +5,7 @@ import Discord from 'discord.js';
 const assetsPath = path.join(__dirname, '../../assets');
 const audioPath = path.join(__dirname, '../../assets/audio/');
 const emotes = require(`${assetsPath}/emotes`);
-const audiomotes = require(`${assetsPath}/audiomotes`);
+const audioEmotes = require(`${assetsPath}/audiomotes`);
 
 
 class Command {
