@@ -1,6 +1,6 @@
 #Nocchi desu.
 
-Setup: `cp config.example.js config.js` and set up discord token, wolfram alpha token.
+Setup: `cp config.example.js config.js` and set up api tokens.
 
 Install: `npm i`
 

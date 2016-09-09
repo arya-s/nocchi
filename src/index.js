@@ -1,7 +1,9 @@
 import commands from './loadCommands';
 import config from '../config';
 import Discord from 'discord.js';
+import Twit from 'twit';
 
+const twit = new Twit(config.twitter).stream('user', {'with': 'user'});
 const bot = new Discord.Client();
 const { discordToken, botname } = config;
 
@@ -18,6 +20,8 @@ bot.on('ready', () => {
 
   bot.setPlayingGame('GAME');
   bot.joinVoiceChannel(voiceChannel);
+
+  twit.on('tweet', parseTweet);
 
 });
 
@@ -49,4 +53,23 @@ bot.on('message', message => {
 });
 
 bot.loginWithToken(discordToken);
-  
+
+const parseTweet = function (tweet) {
+
+  if (tweet.user.screen_name !== config.twitter.user) {
+    return;
+  }
+
+  if (tweet.entities.urls.length === 0) {
+    return;
+  }
+
+  const url = tweet.entities.urls[0].expanded_url;
+
+  console.log(url);
+
+  if (url.indexOf('vine.co') > -1) {
+    textChannel.sendMessage(`${config.owner} uploaded a new vine: ${url}`);
+  }
+
+};

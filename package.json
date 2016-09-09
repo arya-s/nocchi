@@ -26,6 +26,7 @@
   "dependencies": {
     "discord.js": "^8.1.0",
     "jsonfile": "^2.3.1",
+    "twit": "^2.2.4",
     "wolfram-alpha": "^0.5.0"
   }
 }
