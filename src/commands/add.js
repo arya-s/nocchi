@@ -1,9 +1,10 @@
 import path from 'path';
 import jsonfile from 'jsonfile';
-import emotes from '../../assets/emotes';
 import { getEmote, getImage } from '../util';
 
 const emotesPath = path.join(__dirname, '../../assets/emotes.json');
+const assetsPath = path.join(__dirname, '../../assets');
+const emotes = require(emotesPath);
 
 
 class Command {
