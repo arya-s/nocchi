@@ -66,10 +66,10 @@ const parseTweet = function (tweet) {
 
   const url = tweet.entities.urls[0].expanded_url;
 
-  console.log(url);
-
   if (url.indexOf('vine.co') > -1) {
     textChannel.sendMessage(`${config.owner} uploaded a new vine: ${url}`);
+  } else if (url.indexOf('periscope.tv') > -1) {
+    textChannel.sendMessage(`${config.owner} started streaming: ${url}`);
   }
 
 };
