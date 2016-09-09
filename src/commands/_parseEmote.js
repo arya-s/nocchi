@@ -1,11 +1,11 @@
 import path from 'path';
-import emotes from '../../assets/emotes';
-import audioEmotes from '../../assets/audiomotes';
 import { getEmote } from '../util';
 import Discord from 'discord.js';
 
-
+const assetsPath = path.join(__dirname, '../../assets');
 const audioPath = path.join(__dirname, '../../assets/audio/');
+const emotes = require(`${assetsPath}/emotes`);
+const audiomotes = require(`${assetsPath}/audiomotes`);
 
 
 class Command {
