@@ -5,7 +5,7 @@
  */
 export const getEmote = function (message) {
 
-  return message.toLowerCase().split(' ').find(e => {
+  return message.split(' ').find(e => {
 
       return (
         e.indexOf('http') === -1 &&
