@@ -6,19 +6,25 @@ const wolfram = createClient(config.wolframToken);
 class Command {
 
   constructor() {
-    this.aliases = ['convert'];
+    this.aliases = ['convert', 'query', 'q'];
   }
 
   run(payload) {
 
     const { content } = payload.message;
-    const query = content.replace(/\S+ /, '');
+    const split = content.split(' ');
+    const command = split[1];
+    let query = content.replace(/\S+ /, '');
+
+    if (command === 'q' || command === 'query') {
+      query = content.replace(/\S+ \S+ /, '');
+    }
 
     wolfram.query(query, (error, result) => {
 
       if (error || result.length === 0) {
 
-        payload.message.reply('I could not convert this for you. Please try again.');
+        payload.message.reply('I couldn\'t find anything.');
         return console.log(error);
 
       }
