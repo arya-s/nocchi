@@ -40,9 +40,5 @@ class Command {
   }
 
 }
-/*Get a random number bounded by min(inclusive) and max(exclusive)*/
-function getRandom(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
 
 module.exports = new Command();
