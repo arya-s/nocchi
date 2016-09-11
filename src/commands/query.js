@@ -3,7 +3,7 @@ import { createClient } from 'wolfram-alpha';
 import { getRandom } from '../util';
 
 const wolfram = createClient(config.wolframToken);
-var errorResponses = ['I couldn\'t find anything.',
+const errorResponses = ['I couldn\'t find anything.',
 'Yuka-chan is smarter than me, she would know.',
 'Only the Fox God knows.'];
 
