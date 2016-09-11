@@ -2,6 +2,7 @@ import config from '../../config';
 import { createClient } from 'wolfram-alpha';
 
 const wolfram = createClient(config.wolframToken);
+var errorResponses = ['I couldn\'t find anything.', 'Yuka-chan is smarter than me, she would know.', 'Only the Fox God knows.'];
 
 class Command {
 
@@ -23,10 +24,9 @@ class Command {
     wolfram.query(query, (error, result) => {
 
       if (error || result.length === 0) {
-
-        payload.message.reply('I couldn\'t find anything.');
+        var rand = getRandom(0,3);
+        payload.message.reply(errorResponses[rand]);
         return console.log(error);
-
       }
 
       const res = result[1];
@@ -39,6 +39,10 @@ class Command {
 
   }
 
+}
+/*Get a random number bounded by min(inclusive) and max(exclusive)*/
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 module.exports = new Command();
