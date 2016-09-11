@@ -35,3 +35,13 @@ export const getImage = function (message) {
   return image;
 
 };
+
+/**
+ * Get a random number bounded by min and max, rounded down to a whole number.
+ * @param  {number} min - Minimum number(inclusive)
+ * @param  {number} max - Maximum number(exclusive)
+ * @return {number} A randomly generated number rounded down to a whole number.
+ */
+export const getRandom = function (min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
