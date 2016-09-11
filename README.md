@@ -1,10 +1,14 @@
 #Nocchi desu.
 
-Setup: `cp config.example.js config.js` and set up discord token.
+Setup: `cp config.example.js config.js` and set up api tokens.
 
 Install: `npm i`
 
-Run: `node nocchi`
+Build: `npm run build`
+
+Dev run: `npm run dev`
+
+Production run: `node bin/index`
 
 Import cytube exported emotes: `python import_emotes <exported_emotes.json>`
 

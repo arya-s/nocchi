@@ -1,24 +1,14 @@
 module.exports = {
-  discord: '<discord token here>',
-  oxr: '<open exchange rate app id here>',
-  currencies: {
-    'usd': 'USD',
-    'dollars': 'USD',
-    'dollar': 'USD',
-    'bucks': 'USD',
-    '$': 'USD',
-    'eur': 'EUR',
-    'euro': 'EUR',
-    'eurs': 'EUR',
-    '€': 'EUR',
-    'gbp': 'GBP',
-    'pounds': 'GBP',
-    'pound': 'GBP',
-    'quid': 'GBP',
-    'jpy': 'JPY',
-    'yen': 'JPY',
-    'en': 'JPY',
-    '¥': 'JPY',
-    'sek': 'SEK'
+  debug: false,
+  botname: 'BotMcBotface',
+  owner: 'OwnerMcOwnface',
+  discordToken: 'Bot <discord token here>',
+  wolframToken: '<wolfram alpha app id here>',
+  twitter: {
+    access_token: '<access_token>',
+    access_token_secret: '<access_token_secret>',
+    consumer_key: '<consumer_key>',
+    consumer_secret: '<consumer_secret>',
+    user: '<twitter user track>'
   }
 };
