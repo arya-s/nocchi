@@ -1,8 +1,11 @@
 import config from '../../config';
 import { createClient } from 'wolfram-alpha';
+import { getRandom } from '../util';
 
 const wolfram = createClient(config.wolframToken);
-var errorResponses = ['I couldn\'t find anything.', 'Yuka-chan is smarter than me, she would know.', 'Only the Fox God knows.'];
+var errorResponses = ['I couldn\'t find anything.',
+'Yuka-chan is smarter than me, she would know.',
+'Only the Fox God knows.'];
 
 class Command {
 
@@ -24,8 +27,7 @@ class Command {
     wolfram.query(query, (error, result) => {
 
       if (error || result.length === 0) {
-        var rand = getRandom(0,3);
-        payload.message.reply(errorResponses[rand]);
+        payload.message.reply(errorResponses[getRandom(0,3)]);
         return console.log(error);
       }
 
