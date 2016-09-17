@@ -45,3 +45,8 @@ export const getImage = function (message) {
 export const getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+export const errorResponses = ['I couldn\'t find anything.',
+'Yuka-chan is smarter than me, she would know.',
+'Only the Fox God knows.'];
+
