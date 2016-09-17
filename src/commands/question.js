@@ -1,15 +1,12 @@
 import config from '../../config';
-import { getRandom } from '../util';
-const errorResponses = ['I couldn\'t find anything.',
-'Yuka-chan is smarter than me, she would know.',
-'Only the Fox God knows.'];
+import { getRandom, errorResponses } from '../util';
 
 class Command {
   constructor() {
-    this.aliases = ['question', 'question\,'];
+    this.aliases = ['answer', 'qq'];
   }
   run(payload) {
-      payload.message.reply(errorResponses[getRandom(0,3)]);
+      payload.message.reply(errorResponses[getRandom(0,errorResponses.length)]);
   }
 }
 
