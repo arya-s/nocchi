@@ -6,7 +6,7 @@ class Command {
     this.aliases = ['answer', 'qq'];
   }
   run(payload) {
-      payload.message.reply(errorResponses[getRandom(0,errorResponses.length)]);
+      payload.message.channel.sendMessage(errorResponses[getRandom(0,errorResponses.length)]);
   }
 }
 

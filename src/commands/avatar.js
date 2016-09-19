@@ -17,9 +17,9 @@ class Command {
     });
 
     if (foundUser) {
-      payload.message.reply(foundUser.avatarURL);
+      payload.message.channel.sendMessage(foundUser.avatarURL);
     } else {
-      payload.message.reply('Could not find that user.');
+      payload.message.channel.sendMessage('Could not find that user.');
     }
 
   }

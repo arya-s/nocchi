@@ -23,11 +23,11 @@ class Command {
     const isPM = message.channel.isPrivate;
 
     if (emotes.hasOwnProperty(emote)) {
-      bot.sendMessage(message, emotes[emote]);
+      message.channel.sendMessage(emotes[emote]);
     }
 
     if (!isPM && audioEmotes.hasOwnProperty(emote)) {
-      bot.voiceConnection.playFile(`${audioPath}${audioEmotes[emote]}`);
+        payload.voiceConnection.playFile(`${audioPath}${audioEmotes[emote]}`);
     }
 
   }

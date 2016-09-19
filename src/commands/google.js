@@ -10,14 +10,14 @@ class Command {
     const { content } = payload.message;
     const split = content.split(' ');
     var query = "";
-    for(i=2;i<split.length;i++) {
+    for(var i=2;i<split.length;i++) {
         if(i != 2){
             query += "+"+split[i];
         } else {
             query = split[i];
         }
     }
-    payload.message.reply(lmgtfyLink+query);
+    payload.message.channel.sendMessage(lmgtfyLink+query);
   }
 }
 

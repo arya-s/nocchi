@@ -20,7 +20,7 @@ class Command {
     const lower = content.toLowerCase();
 
     if(lower.indexOf('add') === -1 || lower.indexOf('to') === -1 || !getEmote(content)) {
-      return bot.sendMessage(message, 'I couldn\'t add that emote');
+      return message.channel.sendMessage(message, 'I couldn\'t add that emote');
     }
 
     addEmote(content, (error, response) => {
@@ -28,11 +28,11 @@ class Command {
       if (error) {
 
         console.log('Error adding emote.', error);
-        return bot.sendMessage(message, 'Error adding emote. Please try again.');
+        return message.channel.sendMessage(message, 'Error adding emote. Please try again.');
 
       }
 
-      bot.sendMessage(message, response);
+      message.channel.sendMessage(message, response);
 
     });
 

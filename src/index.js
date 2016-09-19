@@ -11,16 +11,20 @@ const { discordToken, botname } = config;
 let voiceChannel = null;
 let textChannel = null;
 let twitLoaded = false;
+let voiceConnection = null;
 
 bot.on('ready', () => {
 
   const { channels } = bot;
 
-  voiceChannel = channels.find(channel => { return channel instanceof Discord.VoiceChannel; });
-  textChannel = channels.find(channel => { return channel instanceof Discord.TextChannel; });
+  voiceChannel = channels.find(channel => { return channel.type == "voice"; });
+  //This should be deprecieated in favour of message.channel, as textChannel is constant and doesn't work with multi-channel bots.
+  textChannel = channels.find(channel => { return channel.type == "text"; });
 
-  bot.setPlayingGame('GAME');
-  bot.joinVoiceChannel(voiceChannel);
+  bot.user.setStatus('online', 'GAME');
+  voiceChannel.join().then(connection => {
+     voiceConnection = connection;
+   }).catch(console.log);
 
   if (!twitLoaded) {
 
@@ -45,7 +49,8 @@ bot.on('message', message => {
   const payload = {
     bot,
     message,
-    channels: { textChannel, voiceChannel }
+    channels: { textChannel, voiceChannel },
+    voiceConnection
   };
 
   if (commands.hasOwnProperty(`${operator} ${cmd}`)) {
@@ -58,4 +63,4 @@ bot.on('message', message => {
 
 });
 
-bot.loginWithToken(discordToken);
+bot.login(discordToken);

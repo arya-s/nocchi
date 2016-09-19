@@ -24,14 +24,14 @@ class Command {
     wolfram.query(query, (error, result) => {
 
       if (error || result.length === 0) {
-        payload.message.reply(errorResponses[getRandom(0,errorResponses.length)]);
+        payload.message.channel.sendMessage(errorResponses[getRandom(0,errorResponses.length)]);
         return console.log(error);
       }
 
       const res = result[1];
 
       if (res && res.subpods && res.subpods[0]) {
-        payload.message.reply(res.subpods[0].text);
+        payload.message.channel.sendMessage(res.subpods[0].text);
       }
 
     });

@@ -14,15 +14,15 @@ class Command {
 
   run(payload) {
 
-    const { bot, message, channels: { textChannel, voiceChannel } } = payload;
+    const { bot, message, channels: { textChannel, voiceChannel }, voiceConnection } = payload;
     const { botname } = config;
 
     const isPM = message.channel.isPrivate;
-
-    bot.sendMessage(message, `${botname} desu.`);
+    
+    message.channel.sendMessage(`${botname} desu.`);
 
     if (!isPM) {
-      bot.voiceConnection.playFile(`${audioPath}${audioEmotes['nocchi']}`);
+     voiceConnection.playFile(`${audioPath}${audioEmotes['nocchi']}`);
     }
 
   }
