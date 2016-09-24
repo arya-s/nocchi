@@ -1,6 +1,6 @@
 import config from '../../config';
 import { createClient } from 'wolfram-alpha';
-import { getRandom, errorResponses } from '../util';
+import { replyWithError } from '../util';
 
 const wolfram = createClient(config.wolframToken);
 
@@ -24,7 +24,7 @@ class Command {
     wolfram.query(query, (error, result) => {
 
       if (error || result.length === 0) {
-        payload.message.reply(errorResponses[getRandom(0,errorResponses.length)]);
+        replyWithError(payload.message);
         return console.log(error);
       }
 
