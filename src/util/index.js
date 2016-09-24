@@ -54,7 +54,7 @@ export const errorResponses = ['I couldn\'t find anything.',
  * Send a message containing one of the error responses.
  * @param  {object} messageObj - The discordjs message object for use in replying.
  */
-export const replyWithError = function(messageObj) [
+export const replyWithError = function(messageObj) {
     messageObj.reply(errorResponses[getRandom(0,errorResponses.length)]);
 }
 
