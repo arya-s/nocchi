@@ -45,3 +45,16 @@ export const getImage = function (message) {
 export const getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
+
+export const errorResponses = ['I couldn\'t find anything.',
+'Yuka-chan is smarter than me, she would know.',
+'Only the Fox God knows.'];
+
+/**
+ * Send a message containing one of the error responses.
+ * @param  {object} messageObj - The discordjs message object for use in replying.
+ */
+export const replyWithError = function(messageObj) {
+    messageObj.reply(errorResponses[getRandom(0,errorResponses.length)]);
+}
+
