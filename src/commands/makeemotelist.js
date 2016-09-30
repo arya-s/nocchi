@@ -30,7 +30,7 @@ class Command {
             return;
         }
         var stream = null;
-        if(content.search(new RegExp('imageless', 'i')) > -1) {
+        if(content.indexOf('imageless') > -1) {
             for (var prop in obj) {
                 emotesListed += '<tr>\n    <td>' + prop + '</td>\n    <td>' + emotes[prop] + '</td>\n</tr>';
             }
