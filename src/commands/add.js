@@ -19,7 +19,7 @@ class Command {
     const { content } = message;
     const lower = content.toLowerCase();
 
-    if(lower.indexOf('add') === -1 || lower.indexOf('to') === -1 || !getEmote(lower)) {
+    if(lower.indexOf('add') === -1 || lower.indexOf('to') === -1 || !getEmote(content)) {
       return bot.sendMessage(message, 'I couldn\'t add that emote');
     }
 
@@ -42,8 +42,7 @@ class Command {
 
 const addEmote = function (message, done) {
 
-  const emote = getEmote(message.toLowerCase());
-
+  const emote = getEmote(message);
   if (emotes.hasOwnProperty(emote)) {
     return done(null, 'We already have that emote.');
   }
