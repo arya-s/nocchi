@@ -19,7 +19,7 @@ class Command {
     const { content } = message;
     const lower = content.toLowerCase();
 
-    if(lower.indexOf('add') === -1 || lower.indexOf('to') === -1 || !getEmote(content)) {
+    if(lower.indexOf('add') === -1 || lower.indexOf('to') === -1 || !getEmote(lower)) {
       return bot.sendMessage(message, 'I couldn\'t add that emote');
     }
 
@@ -41,13 +41,9 @@ class Command {
 }
 
 const addEmote = function (message, done) {
-  /**
-   * Change message to lower case before passing to getEmote / getImage
-   * Must do here because the value is being passed more than once.
-   */  
-  message = message.toLowerCase();
-  
-  const emote = getEmote(message);
+
+  const emote = getEmote(message.toLowerCase());
+
   if (emotes.hasOwnProperty(emote)) {
     return done(null, 'We already have that emote.');
   }
