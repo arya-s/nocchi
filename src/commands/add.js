@@ -41,12 +41,7 @@ class Command {
 }
 
 const addEmote = function (message, done) {
-  /**
-   * Change message to lower case before passing to getEmote / getImage
-   * Must do here because the value is being passed more than once.
-   */  
-  message = message.toLowerCase();
-  
+
   const emote = getEmote(message);
   if (emotes.hasOwnProperty(emote)) {
     return done(null, 'We already have that emote.');
