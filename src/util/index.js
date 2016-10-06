@@ -5,7 +5,7 @@
  */
 export const getEmote = function (message) {
 
-  return message.split(' ').find(e => {
+  return message.toLowerCase().split(' ').find(e => {
 
       return (
         e.indexOf('http') === -1 &&
@@ -57,4 +57,3 @@ export const errorResponses = ['I couldn\'t find anything.\n http://i.imgur.com/
 export const replyWithError = function(messageObj) {
     messageObj.reply(errorResponses[getRandom(0,errorResponses.length)]);
 }
-
