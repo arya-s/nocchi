@@ -41,15 +41,26 @@ class Command {
 }
 
 const addEmote = function (message, done) {
-
   const emote = getEmote(message);
-  if (emotes.hasOwnProperty(emote)) {
-    return done(null, 'We already have that emote.');
-  }
-
   const image = getImage(message);
   if (!image) {
     return done(null, 'That is not an image.');
+  }
+
+  if(emotes[emote] == image){
+    return done(null, 'Image with command is already exist in database');
+  }
+
+  if (emotes.hasOwnProperty(emote)) {
+    console.log("This emoticon is exist in database. Incrementing command name.");
+    let counter = 1;
+    if(emote.match(/(\d+)$/))
+    {
+      counter = parseInt(emote.match(/(\d+)$/)[0], 10);
+      counter +=1;
+  } else {
+      emote = emote + counter;
+    }
   }
 
   emotes[emote] = image;
@@ -60,9 +71,7 @@ const addEmote = function (message, done) {
     }
 
     done(error, 'Added emote.');
-
   });
-
 };
 
 module.exports = new Command();
