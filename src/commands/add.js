@@ -41,25 +41,49 @@ class Command {
 }
 
 const addEmote = function (message, done) {
-  const emote = getEmote(message);
+
+  let emote = getEmote(message);
   const image = getImage(message);
+
   if (!image) {
     return done(null, 'That is not an image.');
   }
 
-  if(emotes[emote] === image){
-    return done(null, 'Image with command is already exist in database');
-  }
-
+  // If the emote already exist we want to find the appropriate counter to append to the emote handle
   if (emotes.hasOwnProperty(emote)) {
-    let counter = 1;
-    if(emote.match(/(\d+)$/))
-    {
-      counter = parseInt(emote.match(/(\d+)$/)[0], 10);
-      counter +=1;
-  } else {
-      emote = `${emote}${counter}`
+
+    // Find all emotes that match our emote name
+    let keys = Object.keys(emotes);
+    let found = keys.reduce((prev, cur) => {
+
+      if (cur.indexOf(emote) > -1) {
+        prev.push(cur);
+      }
+
+      return prev;
+
+    }, []).sort();
+
+    // Reject the emote if the image already exists
+    for (let e of found) {
+
+      if(emotes[e] === image){
+        return done(null, `That image already exists under ${e}`);
+      }
+
     }
+
+    // Find the appropriate counter
+    let last = found[found.length-1];
+    let counter = 1;
+    let matched = last.match(/(\d+)$/);
+
+    if (matched) {
+      counter = parseInt(matched[0], 10) + 1;
+    }
+
+    emote = `${emote}${counter}`;
+
   }
 
   emotes[emote] = image;
@@ -69,7 +93,8 @@ const addEmote = function (message, done) {
       return console.log(error);
     }
 
-    done(error, 'Added emote as ${emote}');
+    done(error, `Added emote as ${emote}.`);
+
   });
 };
 
