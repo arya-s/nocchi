@@ -47,19 +47,18 @@ const addEmote = function (message, done) {
     return done(null, 'That is not an image.');
   }
 
-  if(emotes[emote] == image){
+  if(emotes[emote] === image){
     return done(null, 'Image with command is already exist in database');
   }
 
   if (emotes.hasOwnProperty(emote)) {
-    console.log("This emoticon is exist in database. Incrementing command name.");
     let counter = 1;
     if(emote.match(/(\d+)$/))
     {
       counter = parseInt(emote.match(/(\d+)$/)[0], 10);
       counter +=1;
   } else {
-      emote = emote + counter;
+      emote = `${emote}${counter}`
     }
   }
 
@@ -70,7 +69,7 @@ const addEmote = function (message, done) {
       return console.log(error);
     }
 
-    done(error, 'Added emote.');
+    done(error, 'Added emote as ${emote}');
   });
 };
 
