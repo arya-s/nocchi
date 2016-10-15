@@ -53,17 +53,23 @@ const addEmote = function (message, done) {
   if (emotes.hasOwnProperty(emote)) {
 
     // Find all emotes that match our emote name
+    let pattern = new RegExp(`${emote}(\\d+)`);
     let keys = Object.keys(emotes);
     let found = keys.reduce((prev, cur) => {
 
-      if (cur.indexOf(emote) > -1) {
+      if (pattern.test(cur)) {
         prev.push(cur);
       }
 
       return prev;
 
-    }, []).sort();
+    }, [emote]).sort((first, second) => {
 
+      // We need to sort by the ending numbers not by the entire string to catch /emote10 being placed before /emote2
+      return first.replace(emote, '') - second.replace(emote, '');
+
+    });
+  
     // Reject the emote if the image already exists
     for (let e of found) {
 
@@ -75,11 +81,11 @@ const addEmote = function (message, done) {
 
     // Find the appropriate counter
     let last = found[found.length-1];
-    let counter = 1;
-    let matched = last.match(/(\d+)$/);
+    let counter = 2;
+    let matched = last.match(pattern);
 
     if (matched) {
-      counter = parseInt(matched[0], 10) + 1;
+      counter = parseInt(matched[1], 10) + 1;
     }
 
     emote = `${emote}${counter}`;
