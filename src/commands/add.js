@@ -100,7 +100,8 @@ const addEmote = function (message, done) {
     }
 
     done(error, `Added emote as ${emote}.`);
-	exec('git commit -m "emote update" ./assets/emotes.json;git push')
+    //change git push to the  <local branch>:<remote branch> for the branch you want to update
+	exec('git commit -m "emote update" ./assets/emotes.json;git push origin dev:dev')
   });
 };
 
