@@ -101,9 +101,9 @@ const addEmote = function (message, done) {
 
     done(error, `Added emote as ${emote}.`);
     //change git push to the  <local branch>:<remote branch> for the branch you want to update
-	if (process.env.NOCCHI_ENV === "production") {
+    if (process.env.NOCCHI_ENV === "production") {
     exec('git commit -m "emote update" ./assets/emotes.json;git push origin master');
-	}
+    }
   });
 };
 
