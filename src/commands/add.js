@@ -5,7 +5,7 @@ import { getEmote, getImage } from '../util';
 const emotesPath = path.join(__dirname, '../../assets/emotes.json');
 const assetsPath = path.join(__dirname, '../../assets');
 const emotes = require(emotesPath);
-
+const exec = require('child_process').exec;
 
 class Command {
 
@@ -100,7 +100,10 @@ const addEmote = function (message, done) {
     }
 
     done(error, `Added emote as ${emote}.`);
-
+    //change git push to the  <local branch>:<remote branch> for the branch you want to update
+    if (process.env.NOCCHI_ENV === 'production') {
+      exec('git commit -m "emote update" ./assets/emotes.json;git push origin master');
+    }
   });
 };
 
