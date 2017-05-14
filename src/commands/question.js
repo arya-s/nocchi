@@ -12,7 +12,7 @@ class Command {
       const { bot, message } = payload;
       const { content } = message;
       if(content.search(new RegExp('is (rare|spark|rarespark|\@RareSpark\#5323) cancer', 'i')) > -1) {
-        message.reply(emotes["/cancer"]);
+        message.reply(emotes["/cancer4"]);
       } else if (content.search(new RegExp('should (sven|kitsunesvensson|\@kitsunesvensson\#2988) (shutup|shut up)', 'i')) > -1) {
         message.reply(emotes["/dragonshadows3"]+' \@kitsunesvensson\#2988');
       } else {
