@@ -57,3 +57,33 @@ export const errorResponses = ['I couldn\'t find anything.\n http://i.imgur.com/
 export const replyWithError = function(messageObj) {
     messageObj.reply(errorResponses[getRandom(0,errorResponses.length)]);
 }
+
+
+export const userPerms = {
+    'remove': {
+        'users': [
+            '102392013529296896', //Arya
+            '147213333173501953', //WhyNotDB
+            '191298747735474177', //adthrawn
+            '188865887606931465'  //sawwashere
+        ]
+    }
+};
+
+/**
+ * Checks if the user has permission to use the command
+ * @param  {string} command - The name of the command
+ * @param  {string} userID - The user's ID
+ */
+export const checkIfPerms = function(command, userID) {
+    let commandInPerms = userPerms[command];
+    if (commandInPerms) {
+        if (commandInPerms['users'].includes(userID)) { 
+          return true; 
+        } else { 
+          return false; 
+        }
+    } else {
+        return true;
+    }
+}
