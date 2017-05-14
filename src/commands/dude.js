@@ -6,12 +6,12 @@ class Command {
     this.aliases = ['dude'];
   }
   run(payload) {
-    var response="dude";
-    var length=getRandom(5, 100);
-    for(var i=0;i<length;i++) {
-        response+=getRandom(0,9);
+    var response = 'dude';
+    var length = getRandom(5, 100);
+    for(var i = 0; i < length; i++) {
+        response += getRandom(0,9);
     }
-    response += "?";
+    response += '?';
     payload.message.reply(response);
   }
 }
