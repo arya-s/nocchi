@@ -2,9 +2,11 @@ import config from '../../config';
 import { getRandom } from '../util';
 
 class Command {
+  
   constructor() {
     this.aliases = ['dude'];
   }
+  
   run(payload) {
     var response = 'dude';
     var length = getRandom(5, 100);
@@ -14,6 +16,7 @@ class Command {
     response += '?';
     payload.message.reply(response);
   }
+  
 }
 
 module.exports = new Command();
