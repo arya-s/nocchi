@@ -31,7 +31,13 @@ class Command {
       const res = result[1];
 
       if (res && res.subpods && res.subpods[0]) {
-        payload.message.reply(res.subpods[0].text);
+              payload.message.reply(res.subpods[0].text, {
+                    "embed": {
+                        "image": {
+                            "url": res.subpods[0].image,
+                        }
+                    }
+                });
       }
 
     });
